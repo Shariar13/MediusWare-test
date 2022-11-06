@@ -1,0 +1,69 @@
+{% extends 'backend/base.html' %}
+
+{% block title %} Create Variant {% endblock %}
+
+{% block content %}
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Product Variant</h1>
+        <a href="{% url 'product:create.variant' %}" class="float-right btn btn-primary">+ New Variant</a>
+    </div>
+
+    <div class="card shadow mb-4">
+        <form action="?" method="get" class="card-header py-3">
+            <div class="form-row">
+                <div class="col-md-3">
+                    <input type="text" name="title__icontains" value="{{ request }}" placeholder="Serch"
+                           class="form-control">
+                </div>
+                <div class="col-md-1">
+                    <button class="btn btn-primary">Search</button>
+                </div>
+            </div>
+        </form>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for variant in variant_list %}
+                        <tr>
+                            <td>{{ variant.title }}</td>
+                            <td>{{ variant.description }}</td>
+                            <td>{{ variant.active }}</td>
+                            <td>
+                                <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
+                                    <a href="{% url 'product:update.variant' variant.id %}"
+                                       class="btn btn-primary">Edit</a>
+                                    <button type="button" class="btn btn-danger">Delete</button>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="pagination">
+                <span class="page-links">
+                    {% if page_obj.has_previous %}
+                        <a href="/product/variants/?browse={{ input }}&page={{ page_obj.previous_page_number }}">previous</a>
+                    {% endif %}
+                    <span class="page-current">
+                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                    </span>
+                    {% if page_obj.has_next %}
+                        <a href="/product/variants/?browse={{ input }}&page={{ page_obj.next_page_number }}">next</a>
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+    </div>
+{% endblock %}
